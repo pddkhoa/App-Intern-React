@@ -10,5 +10,8 @@ const addNewUser = (name, job) => {
 const updateUser = (name, job) => {
   return instance.put(`/api/users/`, { name, job });
 };
+const deleteUser = (id) => {
+  return instance.delete(`/api/users/${id}`);
+};
 
-export { fetchAllUser, addNewUser, updateUser };
+export { fetchAllUser, addNewUser, updateUser, deleteUser };
