@@ -10,6 +10,7 @@ import { Popconfirm } from "antd";
 import { toast } from "react-toastify";
 import { CSVLink } from "react-csv";
 import { Button } from "@mui/material";
+import Papa from "papaparse";
 import "./TableUser.scss";
 function TableUser() {
   const [totalPage, setTotalPage] = useState(0);
@@ -63,6 +64,52 @@ function TableUser() {
       }
     };
     deleteU();
+  };
+  //
+  const handleImportCSV = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Only accept csv file...");
+        return;
+      }
+
+      //
+      Papa.parse(file, {
+        complete: function (result) {
+          let rawCSV = result.data;
+          if (rawCSV.length > 0) {
+            if (rawCSV[0] && rawCSV[0].length === 4) {
+              if (
+                rawCSV[0][0] === "Id" ||
+                rawCSV[0][1] === "First Name" ||
+                rawCSV[0][2] === "Last Name" ||
+                rawCSV[0][3] === "Email"
+              ) {
+                let res = [];
+                rawCSV.map((item, index) => {
+                  if (index > 0 && item.length === 4) {
+                    let obj = {};
+                    obj.id = item[0];
+                    obj.first_name = item[1];
+                    obj.last_name = item[2];
+                    obj.email = item[3];
+                    res.push(obj);
+                  }
+                });
+                setListUser(res);
+              } else {
+                toast.error("Wrong format file!");
+              }
+            } else {
+              toast.error("Wrong format file!");
+            }
+          } else {
+            toast.error("Not found data in file");
+          }
+        },
+      });
+    }
   };
   //
   const handleExport = (event, done) => {
@@ -128,11 +175,17 @@ function TableUser() {
         <div className="vr" />
         <Button
           variant="contained"
-          color="secondary"
-          startIcon={<i className="fa-solid fa-upload"></i>}
+          color="primary"
+          startIcon={<i class="fa-solid fa-upload"></i>}
         >
-          Import
+          <label htmlFor="test">import</label>
         </Button>
+        <Form.Control
+          id="test"
+          type="file"
+          onChange={(event) => handleImportCSV(event)}
+          hidden
+        ></Form.Control>
         <div className="vr" />
         <CSVLink
           data={dataExport}
