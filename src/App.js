@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "./component/Header";
-import { Button, Container, Stack } from "react-bootstrap";
-import TableUser from "./component/TableUser";
-import AddNew from "./component/AddNew";
+
+import { Container } from "react-bootstrap";
+import AppRouter from "./Router/AppRouter";
+import RootRouter from "./Router/RootRouter";
 import { ToastContainer } from "react-toastify";
+import { UserContext } from "./component/UserContext";
 import "./App.css";
 
 function App() {
+  const { user, loginContext } = useContext(UserContext);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      loginContext(
+        localStorage.getItem("email"),
+        localStorage.getItem("token")
+      );
+    }
+  }, []);
   return (
     <div className="App">
-      <Header />
+      {user.auth === true && <Header />}
       <Container className="mt-3">
-        <TableUser />
+        <RootRouter />
       </Container>
       <ToastContainer
         position="top-right"

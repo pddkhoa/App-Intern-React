@@ -162,12 +162,22 @@ function TableUser() {
   }, 500);
   return (
     <>
+      <InputGroup className="mb-3 w-50">
+        <InputGroup.Text id="basic-addon1">
+          <i className="fa-solid fa-magnifying-glass"></i>
+        </InputGroup.Text>
+        <Form.Control
+          onChange={(event) => handleSearch(event)}
+          placeholder="Search email..."
+          aria-describedby="basic-addon1"
+        />
+      </InputGroup>
       <Stack direction="horizontal" className="mb-3" gap={3}>
-        <div>List User</div>
         <Button
           className="ms-auto"
           variant="contained"
           color="success"
+          onClick={() => setShowModal(true)}
           startIcon={<i className="fa-solid fa-user-plus"></i>}
         >
           Add New User
@@ -176,7 +186,7 @@ function TableUser() {
         <Button
           variant="contained"
           color="primary"
-          startIcon={<i class="fa-solid fa-upload"></i>}
+          startIcon={<i className="fa-solid fa-upload"></i>}
         >
           <label htmlFor="test">import</label>
         </Button>
@@ -201,17 +211,6 @@ function TableUser() {
           </Button>
         </CSVLink>
       </Stack>
-
-      <InputGroup className="mb-3 w-50">
-        <InputGroup.Text id="basic-addon1">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </InputGroup.Text>
-        <Form.Control
-          onChange={(event) => handleSearch(event)}
-          placeholder="Search email..."
-          aria-describedby="basic-addon1"
-        />
-      </InputGroup>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -251,7 +250,7 @@ function TableUser() {
                       className="mx-3"
                       variant="outlined"
                       color="primary"
-                      startIcon={<i class="fa-solid fa-pen-to-square"></i>}
+                      startIcon={<i className="fa-solid fa-pen-to-square"></i>}
                       onClick={() => handleEditClick(item)}
                     >
                       Edit
@@ -263,7 +262,7 @@ function TableUser() {
                       <Button
                         variant="outlined"
                         color="error"
-                        startIcon={<i class="fa-solid fa-trash"></i>}
+                        startIcon={<i className="fa-solid fa-trash"></i>}
                       >
                         Delete
                       </Button>

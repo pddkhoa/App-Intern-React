@@ -13,5 +13,8 @@ const updateUser = (name, job) => {
 const deleteUser = (id) => {
   return instance.delete(`/api/users/${id}`);
 };
+const loginApp = (email, password) => {
+  return instance.post(`/api/login`, { email, password });
+};
 
-export { fetchAllUser, addNewUser, updateUser, deleteUser };
+export { fetchAllUser, addNewUser, updateUser, deleteUser, loginApp };
