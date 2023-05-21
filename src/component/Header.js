@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Nav, Navbar, Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "./UserContext";
-import { useContext } from "react";
-
+import { useDispatch } from "react-redux";
+import { handleLogoutRedux } from "../Redux/actions/userAction";
 function Header() {
-  const { user, logOut } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.account);
   const navigate = useNavigate();
   const handleLogout = () => {
-    logOut();
-    navigate("/login");
-    toast.success("Logout success");
+    console.log("check");
+    dispatch(handleLogoutRedux());
   };
+
+  useEffect(() => {
+    if (user && user.auth === false) {
+      navigate("/");
+      toast.success("Logout success");
+    }
+  }, [user]);
   return (
     <Navbar bg="dark" variant="dark">
       <Container>

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { UserContext } from "../component/UserContext";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 function PrivateRouter({ element }) {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.account);
 
   return user.auth ? element : navigate("/login");
 }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { loginApp } from "../Service/userService";
 import { toast } from "react-toastify";
-import { UserContext } from "./UserContext";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
   Link,
@@ -20,12 +20,14 @@ import {
 } from "@mui/material";
 import "./Login.scss";
 import { useNavigate } from "react-router";
+import { handleLoginRedux } from "../Redux/actions/userAction";
 
 const defaultTheme = createTheme();
 function Login() {
   const navigate = useNavigate();
-  const { user, loginContext } = useContext(UserContext);
-  const [loadingApi, setLoadingApi] = useState(false);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const user = useSelector((state) => state.user.account);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
@@ -51,18 +53,15 @@ function Login() {
       toast.error("Email/Password is required");
       return;
     }
-    setLoadingApi(true);
-    let res = await loginApp(email.trim(), password);
-    if (res && res.token) {
-      loginContext(email, res.token);
-      navigate("/");
-    } else {
-      if (res && res.status === 400) {
-        toast.error(res.data.error);
-      }
-    }
-    setLoadingApi(false);
+
+    dispatch(handleLoginRedux(email, password));
   };
+  //
+  useEffect(() => {
+    if (user && user.auth === true) {
+      navigate("/");
+    }
+  }, [user]);
   //
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -137,7 +136,7 @@ function Login() {
               onClick={() => handleLogin()}
               sx={{ mt: 3, mb: 2 }}
             >
-              {loadingApi && (
+              {isLoading && (
                 <i className="fas fa-circle-notch fa-spin mx-1"></i>
               )}
               Sign In

@@ -4,7 +4,7 @@ import AppRouter from "./AppRouter";
 import LoginPrivate from "./LoginPrivate";
 import Login from "../component/Login";
 import { Routes, Route } from "react-router-dom";
-import Header from "../component/Header";
+
 function RootRouter() {
   return (
     <Routes>
