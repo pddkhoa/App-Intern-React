@@ -8,7 +8,7 @@ import { Routes, Route } from "react-router-dom";
 function RootRouter() {
   return (
     <Routes>
-      <Route path="/*" element={<PrivateRouter element={<AppRouter />} />} />
+      <Route path="/" element={<PrivateRouter element={<AppRouter />} />} />
       <Route path="/login" element={<LoginPrivate element={<Login />} />} />
     </Routes>
   );

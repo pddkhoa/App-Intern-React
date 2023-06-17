@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 function LoginPrivate({ element }) {
   const navigate = useNavigate();
